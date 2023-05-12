@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* Googlefont Poppins CDN Link */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .sidebar {
+        position: fixed;
+        height: 100%;
+        width: 240px;
+        background: #0A2558;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.active {
+        width: 60px;
+    }
+
+    .sidebar .logo-details {
+        height: 80px;
+        display: flex;
+        align-items: center;
+    }
+
+    .sidebar .logo-details i {
+        font-size: 28px;
+        font-weight: 500;
+        color: #fff;
+        min-width: 60px;
+        text-align: center
+    }
+
+    .sidebar .logo-details .logo_name {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .sidebar .nav-links {
+        margin-top: 10px;
+    }
+
+    .sidebar .nav-links li {
+        position: relative;
+        list-style: none;
+        height: 50px;
+    }
+
+    .sidebar .nav-links li a {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.4s ease;
+    }
+
+    .sidebar .nav-links li a.active {
+        background: #081D45;
+    }
+
+    .sidebar .nav-links li a:hover {
+        background: #081D45;
+    }
+
+    .sidebar .nav-links li i {
+        min-width: 60px;
+        text-align: center;
+        font-size: 18px;
+        color: #fff;
+    }
+
+    .sidebar .nav-links li a .links_name {
+        color: #fff;
+        font-size: 15px;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+
+    .sidebar .nav-links .log_out {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .home-section {
+        position: relative;
+        background: #f5f5f5;
+        min-height: 100vh;
+        width: calc(100% - 240px);
+        left: 240px;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.active~.home-section {
+        width: calc(100% - 60px);
+        left: 60px;
+    }
+
+    .home-section nav {
+        display: flex;
+        justify-content: space-between;
+        height: 80px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        width: calc(100% - 240px);
+        left: 240px;
+        z-index: 100;
+        padding: 0 20px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.active~.home-section nav {
+        left: 60px;
+        width: calc(100% - 60px);
+    }
+
+    .home-section nav .sidebar-button {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    nav .sidebar-button i {
+        font-size: 35px;
+        margin-right: 10px;
+    }
+
+    .home-section nav .search-box {
+        position: relative;
+        height: 50px;
+        max-width: 550px;
+        width: 100%;
+        margin: 0 20px;
+    }
+
+    nav .search-box input {
+        height: 100%;
+        width: 100%;
+        outline: none;
+        background: #F5F6FA;
+        border: 2px solid #EFEEF1;
+        border-radius: 6px;
+        font-size: 18px;
+        padding: 0 15px;
+    }
+
+    nav .search-box .bx-search {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        background: #2697FF;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 4px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        font-size: 22px;
+        transition: all 0.4 ease;
+    }
+
+    .home-section nav .profile-details {
+        display: flex;
+        align-items: center;
+        background: #F5F6FA;
+        border: 2px solid #EFEEF1;
+        border-radius: 6px;
+        height: 50px;
+        min-width: 190px;
+        padding: 0 15px 0 2px;
+    }
+
+    nav .profile-details img {
+        height: 40px;
+        width: 40px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+    nav .profile-details .admin_name {
+        font-size: 15px;
+        font-weight: 500;
+        color: #333;
+        margin: 0 10px;
+        white-space: nowrap;
+    }
+
+    nav .profile-details i {
+        font-size: 25px;
+        color: #333;
+    }
+
+    .home-section .home-content {
+        position: relative;
+        padding-top: 104px;
+    }
+
+    .home-content .overview-boxes {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0 20px;
+        margin-bottom: 26px;
+    }
+
+    .overview-boxes .box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(100% / 4 - 15px);
+        background: #fff;
+        padding: 15px 14px;
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .overview-boxes .box-topic {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .home-content .box .number {
+        display: inline-block;
+        font-size: 35px;
+        margin-top: -6px;
+        font-weight: 500;
+    }
+
+    .home-content .box .indicator {
+        display: flex;
+        align-items: center;
+    }
+
+    .home-content .box .indicator i {
+        height: 20px;
+        width: 20px;
+        background: #8FDACB;
+        line-height: 20px;
+        text-align: center;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 20px;
+        margin-right: 5px;
+    }
+
+    .box .indicator i.down {
+        background: #e87d88;
+    }
+
+    .home-content .box .indicator .text {
+        font-size: 12px;
+    }
+
+    .home-content .box .cart {
+        display: inline-block;
+        font-size: 32px;
+        height: 50px;
+        width: 50px;
+        background: #cce5ff;
+        line-height: 50px;
+        text-align: center;
+        color: #66b0ff;
+        border-radius: 12px;
+        margin: -15px 0 0 6px;
+    }
+
+    .home-content .box .cart.two {
+        color: #2BD47D;
+        background: #C0F2D8;
+    }
+
+    .home-content .box .cart.three {
+        color: #ffc233;
+        background: #ffe8b3;
+    }
+
+    .home-content .box .cart.four {
+        color: #e05260;
+        background: #f7d4d7;
+    }
+
+    .home-content .total-order {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .home-content .sales-boxes {
+        display: flex;
+        justify-content: space-between;
+        /* padding: 0 20px; */
+    }
+
+    /* left box */
+    .home-content .sales-boxes .recent-sales {
+        width: 65%;
+        background: #fff;
+        padding: 20px 30px;
+        margin: 0 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-content .sales-boxes .sales-details {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .sales-boxes .box .title {
+        font-size: 24px;
+        font-weight: 500;
+        /* margin-bottom: 10px; */
+    }
+
+    .sales-boxes .sales-details li.topic {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .sales-boxes .sales-details li {
+        list-style: none;
+        margin: 8px 0;
+    }
+
+    .sales-boxes .sales-details li a {
+        font-size: 18px;
+        color: #333;
+        font-size: 400;
+        text-decoration: none;
+    }
+
+    .sales-boxes .box .button {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .sales-boxes .box .button a {
+        color: #fff;
+        background: #0A2558;
+        padding: 4px 12px;
+        font-size: 15px;
+        font-weight: 400;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .sales-boxes .box .button a:hover {
+        background: #0d3073;
+    }
+
+    /* Right box */
+    .home-content .sales-boxes .top-sales {
+        width: 35%;
+        background: #fff;
+        padding: 20px 30px;
+        margin: 0 20px 0 0;
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sales-boxes .top-sales li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+    }
+
+    .sales-boxes .top-sales li a img {
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-right: 10px;
+        background: #333;
+    }
+
+    .sales-boxes .top-sales li a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .sales-boxes .top-sales li .product,
+    .price {
+        font-size: 17px;
+        font-weight: 400;
+        color: #333;
+    }
+
+    /* Responsive Media Query */
+    @media (max-width: 1240px) {
+        .sidebar {
+            width: 60px;
+        }
+
+        .sidebar.active {
+            width: 220px;
+        }
+
+        .home-section {
+            width: calc(100% - 60px);
+            left: 60px;
+        }
+
+        .sidebar.active~.home-section {
+            /* width: calc(100% - 220px); */
+            overflow: hidden;
+            left: 220px;
+        }
+
+        .home-section nav {
+            width: calc(100% - 60px);
+            left: 60px;
+        }
+
+        .sidebar.active~.home-section nav {
+            width: calc(100% - 220px);
+            left: 220px;
+        }
+    }
+
+    @media (max-width: 1150px) {
+        .home-content .sales-boxes {
+            flex-direction: column;
+        }
+
+        .home-content .sales-boxes .box {
+            width: 100%;
+            overflow-x: scroll;
+            margin-bottom: 30px;
+        }
+
+        .home-content .sales-boxes .top-sales {
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 1000px) {
+        .overview-boxes .box {
+            width: calc(100% / 2 - 15px);
+            margin-bottom: 15px;
+        }
+    }
+
+    @media (max-width: 700px) {
+
+        nav .sidebar-button .dashboard,
+        nav .profile-details .admin_name,
+        nav .profile-details i {
+            display: none;
+        }
+
+        .home-section nav .profile-details {
+            height: 50px;
+            min-width: 40px;
+        }
+
+        .home-content .sales-boxes .sales-details {
+            width: 560px;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .overview-boxes .box {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .sidebar.active~.home-section nav .profile-details {
+            display: none;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .sidebar {
+            width: 0;
+        }
+
+        .sidebar.active {
+            width: 60px;
+        }
+
+        .home-section {
+            width: 100%;
+            left: 0;
+        }
+
+        .sidebar.active~.home-section {
+            left: 60px;
+            width: calc(100% - 60px);
+        }
+
+        .home-section nav {
+            width: 100%;
+            left: 0;
+        }
+
+        .sidebar.active~.home-section nav {
+            left: 60px;
+            width: calc(100% - 60px);
+        }
+    }
+</style>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bxl-c-plus-plus'></i>
+            <span class="logo_name">SUIIT</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="/signup2.html" class="active">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Student List</span>
+                </a>
+            </li>
+             <li>
+          <a href="/activedrive.html">
+            <i class='bx bx-box' ></i>
+            
+            <span class="links_name">Active Drive</span>
+          </a>
+        </li> 
+            <li>
+                <a href="/about.html">
+                    <i class='bx bx-box'></i>
+
+                    <span class="links_name">About</span>
+                </a>
+            </li>
+            <li>
+                <a href="/contact.html">
+                    <i class='bx bx-box'></i>
+
+                    <span class="links_name">Contact Us</span>
+                </a>
+            </li>
+             <li>
+                <a href="/logout.html">
+                    <i class='bx bx-box'></i>
+
+                    <span class="links_name">Logout</span>
+                </a>
+            </li> 
+        </ul>
+    </div>
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Dashboard</span>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Search...">
+                <i class='bx bx-search'></i>
+            </div>
+            <div class="profile-details">
+                <!--<img src="images/profile.jpg" alt="">-->
+                <span class="admin_name">Placement Cell</span>
+                <i class='bx bx-chevron-down'></i>
+            </div>
+        </nav>
+
+        <div class="home-content">
+            <div class="overview-boxes">
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">No of total Students</div>
+                        <div class="number">1000</div>
+                        <div class="indicator">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span class="text"></span>
+                        </div>
+                    </div>
+                    <i class='bx bx-cart-alt cart'></i>
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">No of students got Internships</div>
+                        <div class="number">300</div>
+                        <div class="indicator">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span class="text"></span>
+                        </div>
+                    </div>
+                    <i class='bx bxs-cart-add cart two'></i>
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total no of students got placed</div>
+                        <div class="number">400</div>
+                        <div class="indicator">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span class="text"></span>
+                        </div>
+                    </div>
+                    <i class='bx bx-cart cart three'></i>
+                </div>
+                <i class='bx bxs-cart-download cart four'></i>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total no of students got placed</div>
+                        <div class="number">400</div>
+                        <div class="indicator">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span class="text"></span>
+                        </div>
+                    </div>
+                    <i class='bx bx-cart cart three'></i>
+                </div>
+                <i class='bx bxs-cart-download cart four'></i>
+            </div>
+        </div>
+
+
+        <div class="container" style="margin-top: 3px; margin-left:400px;">
+            <div id="post-990" class="post-990 page type-page status-publish hentry">
+
+                <h1 class="title-header">Placement@SUIIT</h1>
+                <div class="entry-content clearfix">
+                    <h2>2022 Batch Placed Students</h2>
+                    <table width="723">
+                        <tbody>
+                            <tr>
+                                <td colspan="4" width="621">
+                                    <p><strong>&nbsp;</strong></p>
+                                </td>
+                                <td width="101">
+                                    <p>&nbsp;</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p><strong>Sl. No.</strong></p>
+                                </td>
+                                <td width="176">
+                                    <p><strong>Name</strong></p>
+                                </td>
+                                <td width="116">
+                                    <p><strong>Course &amp; Stream</strong></p>
+                                </td>
+                                <td width="283">
+                                    <p><strong>Organisation details</strong></p>
+                                </td>
+                                <td width="101">
+                                    <p><strong>Package (LPA)</strong></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>1</p>
+                                </td>
+                                <td width="176">
+                                    <p>Sujata Majhi</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Wipro</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>2</p>
+                                </td>
+                                <td width="176">
+                                    <p>Jeevan Jyoti Dash</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Wipro, Capgemini, MBO Partners</p>
+                                </td>
+                                <td width="101">
+                                    <p>7</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>3</p>
+                                </td>
+                                <td width="176">
+                                    <p>Pooja Kumari Singh</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>TCS</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.8</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>4</p>
+                                </td>
+                                <td width="176">
+                                    <p>Krishna Panigrahgi</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>TCS</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.8</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>5</p>
+                                </td>
+                                <td width="176">
+                                    <p>Tarini Prasad Mohanty</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>CLASSPLUS</p>
+                                </td>
+                                <td width="101">
+                                    <p>12.4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>6</p>
+                                </td>
+                                <td width="176">
+                                    <p>Ashutosh Pandey</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Capgemini, Mindtree</p>
+                                </td>
+                                <td width="101">
+                                    <p>4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>7</p>
+                                </td>
+                                <td width="176">
+                                    <p>Satyanarayan Patra</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Capegemini, Mindtree, Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>8</p>
+                                </td>
+                                <td width="176">
+                                    <p>Dheeraj Kumar Bhanja</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Capegemini</p>
+                                </td>
+                                <td width="101">
+                                    <p>4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>9</p>
+                                </td>
+                                <td width="176">
+                                    <p>Pratyush Mahapatra</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>MIKELEGAL</p>
+                                </td>
+                                <td width="101">
+                                    <p>10</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>10</p>
+                                </td>
+                                <td width="176">
+                                    <p>Srikant Mishra</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Codeyoung</p>
+                                </td>
+                                <td width="101">
+                                    <p>7</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>11</p>
+                                </td>
+                                <td width="176">
+                                    <p>Aadesh Bharadwaj</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>InnoMinds, Infosys, Revature, Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>2.8</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>12</p>
+                                </td>
+                                <td width="176">
+                                    <p>Ashutosh Panda</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>MUVI</p>
+                                </td>
+                                <td width="101">
+                                    <p>2.4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>13</p>
+                                </td>
+                                <td width="176">
+                                    <p>Anchal Agrawal</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Infosys</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.6</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>14</p>
+                                </td>
+                                <td width="176">
+                                    <p>Sonani Mohapatra</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>MUVI</p>
+                                </td>
+                                <td width="101">
+                                    <p>2.4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>15</p>
+                                </td>
+                                <td width="176">
+                                    <p>Soumyank Bhoi</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Sugar Cometics</p>
+                                </td>
+                                <td width="101">
+                                    <p>6</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>16</p>
+                                </td>
+                                <td width="176">
+                                    <p>Ishita Majhi</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>ARSS Infrastructure Projects Limited</p>
+                                </td>
+                                <td width="101">
+                                    <p>5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>17</p>
+                                </td>
+                                <td width="176">
+                                    <p>Manoj Bhumia</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Wipro</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>18</p>
+                                </td>
+                                <td width="176">
+                                    <p>Niladri Pal</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Nettantra Technologies</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>19</p>
+                                </td>
+                                <td width="176">
+                                    <p>Subham Sarthak Pradhan</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Capegemini</p>
+                                </td>
+                                <td width="101">
+                                    <p>4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>20</p>
+                                </td>
+                                <td width="176">
+                                    <p>Anil Shetty</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Capegemini</p>
+                                </td>
+                                <td width="101">
+                                    <p>5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>21</p>
+                                </td>
+                                <td width="176">
+                                    <p>Sourav Mohanty</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Cirrus Cloud System</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.6</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>22</p>
+                                </td>
+                                <td width="176">
+                                    <p>Ipsita Sahu</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Capegemini, Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>23</p>
+                                </td>
+                                <td width="176">
+                                    <p>Reena Ram</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>24</p>
+                                </td>
+                                <td width="176">
+                                    <p>Arpit Nanda</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>25</p>
+                                </td>
+                                <td width="176">
+                                    <p>Arpita Seth</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>26</p>
+                                </td>
+                                <td width="176">
+                                    <p>Soumya Ranjan Sahu</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>27</p>
+                                </td>
+                                <td width="176">
+                                    <p>Namrata Singh</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>28</p>
+                                </td>
+                                <td width="176">
+                                    <p>Yatin Khandagiri</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>29</p>
+                                </td>
+                                <td width="176">
+                                    <p>Anirudh Biswal</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;Qspiders</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>30</p>
+                                </td>
+                                <td width="176">
+                                    <p>Amit Kumar Nayak</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech CSE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Infosys</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.6</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>&nbsp;</p>
+                                </td>
+                                <td width="176">
+                                    <p>&nbsp;</p>
+                                </td>
+                                <td width="116">
+                                    <p>&nbsp;</p>
+                                </td>
+                                <td width="283">
+                                    <p>&nbsp;</p>
+                                </td>
+                                <td width="101">
+                                    <p>&nbsp;</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>31</p>
+                                </td>
+                                <td width="176">
+                                    <p>Sweta Saha</p>
+                                </td>
+                                <td width="116">
+                                    <p>MCA</p>
+                                </td>
+                                <td width="283">
+                                    <p>C.V. Raman Global University</p>
+                                </td>
+                                <td width="101">
+                                    <p>3</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>32</p>
+                                </td>
+                                <td width="176">
+                                    <p>Akanksha Panda</p>
+                                </td>
+                                <td width="116">
+                                    <p>MCA</p>
+                                </td>
+                                <td width="283">
+                                    <p>C.V. Raman Global University</p>
+                                </td>
+                                <td width="101">
+                                    <p>3</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>33</p>
+                                </td>
+                                <td width="176">
+                                    <p>Sanchita Mohanty</p>
+                                </td>
+                                <td width="116">
+                                    <p>MCA</p>
+                                </td>
+                                <td width="283">
+                                    <p>C.V. Raman Global University</p>
+                                </td>
+                                <td width="101">
+                                    <p>3</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>34</p>
+                                </td>
+                                <td width="176">
+                                    <p>Nikita Meher</p>
+                                </td>
+                                <td width="116">
+                                    <p>MCA</p>
+                                </td>
+                                <td width="283">
+                                    <p>C.V. Raman Global University</p>
+                                </td>
+                                <td width="101">
+                                    <p>3</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>35</p>
+                                </td>
+                                <td width="176">
+                                    <p>Manish Kumar Meher</p>
+                                </td>
+                                <td width="116">
+                                    <p>MSc CS</p>
+                                </td>
+                                <td width="283">
+                                    <p>C.V. Raman Global University</p>
+                                </td>
+                                <td width="101">
+                                    <p>3</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>36</p>
+                                </td>
+                                <td width="176">
+                                    <p>Somnath Sa</p>
+                                </td>
+                                <td width="116">
+                                    <p>MCA</p>
+                                </td>
+                                <td width="283">
+                                    <p>High Court</p>
+                                </td>
+                                <td width="101">
+                                    <p>2.8</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>37</p>
+                                </td>
+                                <td width="176">
+                                    <p>Sambit Pradhan</p>
+                                </td>
+                                <td width="116">
+                                    <p>MCA</p>
+                                </td>
+                                <td width="283">
+                                    <p>Wipro</p>
+                                </td>
+                                <td width="101">
+                                    <p>2.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>38</p>
+                                </td>
+                                <td width="176">
+                                    <p>Subharanshu Mudli</p>
+                                </td>
+                                <td width="116">
+                                    <p>MCA</p>
+                                </td>
+                                <td width="283">
+                                    <p>Wipro</p>
+                                </td>
+                                <td width="101">
+                                    <p>2.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">&nbsp;</td>
+                                <td width="176">&nbsp;</td>
+                                <td width="116">&nbsp;</td>
+                                <td width="283">&nbsp;</td>
+                                <td width="101">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>39</p>
+                                </td>
+                                <td width="176">
+                                    <p>Debashish Rout</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech ECE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Wipro</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>40</p>
+                                </td>
+                                <td width="176">
+                                    <p>Ashutosh Garnayak</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech ECE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Wipro, Mindtree</p>
+                                </td>
+                                <td width="101">
+                                    <p>4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>41</p>
+                                </td>
+                                <td width="176">
+                                    <p>Rupali Rupasmita Panigrahi</p>
+                                </td>
+                                <td width="116">
+                                    <p>BTech ECE</p>
+                                </td>
+                                <td width="283">
+                                    <p>CLASSPLUS</p>
+                                </td>
+                                <td width="101">
+                                    <p>6.2</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>42</p>
+                                </td>
+                                <td width="176">
+                                    <p>Ashutosh Behera</p>
+                                </td>
+                                <td width="116">
+                                    <p>LBTech ECE</p>
+                                </td>
+                                <td width="283">
+                                    <p>SquareOps Technologies Pvt Ltd., Hexaware</p>
+                                </td>
+                                <td width="101">
+                                    <p>4.5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>43</p>
+                                </td>
+                                <td width="176">
+                                    <p>Bodhisatwo Nayak</p>
+                                </td>
+                                <td width="116">
+                                    <p>BtechECE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Infosys, Wipro</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.6</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>44</p>
+                                </td>
+                                <td width="176">
+                                    <p>Biwajit Jena</p>
+                                </td>
+                                <td width="116">
+                                    <p>BtechECE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Infosys</p>
+                                </td>
+                                <td width="101">
+                                    <p>3.6</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>45</p>
+                                </td>
+                                <td width="176">
+                                    <p>Nilesh Kumar Pati</p>
+                                </td>
+                                <td width="116">
+                                    <p>BtechECE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Osmosys, Css Corp, Meditab Software</p>
+                                </td>
+                                <td width="101">
+                                    <p>7.2</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">&nbsp;</td>
+                                <td width="176">&nbsp;</td>
+                                <td width="116">&nbsp;</td>
+                                <td width="283">&nbsp;</td>
+                                <td width="101">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>46</p>
+                                </td>
+                                <td width="176">
+                                    <p>Bikasha Mohapatra</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech EEE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Infosys,Wipro, Revature</p>
+                                </td>
+                                <td width="101">
+                                    <p>4</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>47</p>
+                                </td>
+                                <td width="176">
+                                    <p>Dhiraj Das</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech EEE</p>
+                                </td>
+                                <td width="283">
+                                    <p>TPWODL</p>
+                                </td>
+                                <td width="101">
+                                    <p>7.2</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="46">
+                                    <p>48</p>
+                                </td>
+                                <td width="176">
+                                    <p>Ishika Agrawal</p>
+                                </td>
+                                <td width="116">
+                                    <p>Btech EEE</p>
+                                </td>
+                                <td width="283">
+                                    <p>Jindal</p>
+                                </td>
+                                <td width="101">
+                                    <p>5</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <h3>CSE</h3>
+                    <p><iframe src="https://drive.google.com/file/d/19GL44bu2fspAHI8HBS_5h8JZaakvkFaN/preview"
+                            width="640" height="480"></iframe></p>
+                    <p><iframe loading="lazy"
+                            src="https://drive.google.com/file/d/18oYqfrmraHeSk-sFOW1M6TmFQ-3KaQKd/preview" width="640"
+                            height="480"></iframe></p>
+                    <p><iframe loading="lazy"
+                            src="https://drive.google.com/file/d/1xAxCL9SGbOiiCSFaacv0ThrOs3fdikbb/preview" width="640"
+                            height="480"></iframe></p>
+                    <h3>EEE &amp; MCA</h3>
+                    <p><iframe loading="lazy"
+                            src="https://drive.google.com/file/d/1EPacEdO-uJ92OlbrJcVpkd23_PRYzNxa/preview" width="640"
+                            height="480"></iframe></p>
+                    <h3>ECE</h3>
+                    <p><iframe loading="lazy"
+                            src="https://drive.google.com/file/d/1hW1Cpzd9WkNjwFrSlsvNaMcOTubFnBuH/preview" width="640"
+                            height="480"></iframe></p>
+                    <h2>2022 Placement Brochure</h2>
+                    <p><iframe loading="lazy"
+                            src="https://drive.google.com/file/d/1HH083iti8VPmewKz7NeKIQVWpwqgpLz1/preview" width="640"
+                            height="480"></iframe></p>
+                    <h2>2021 Batch Placed Students</h2>
+                    <p><iframe loading="lazy"
+                            src="https://drive.google.com/file/d/1ml-cGOA_NmMIRrnQqtt-YPIP2sWShKXE/preview" width="640"
+                            height="480"></iframe></p>
+                    <p><iframe loading="lazy"
+                            src="https://drive.google.com/file/d/1BdxwZpLxwl7WwDQHC-6m49l0pO0NKqtJ/preview" width="640"
+                            height="480"></iframe></p>
+
+
+                    
+
+
+                    <div class="table-responsive">
+                        <table style="width:100%; " class="easy-table easy-table-default ">
+                            <tbody>
+                                <tr>
+                                    <td>Tata Consultancy Services </td>
+                                    <td> Infosys</td>
+                                </tr>
+
+                                <tr>
+                                    <td>IBM India</td>
+                                    <td> WIPRO Limited</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Tech-Mahindra Limited</td>
+                                    <td> Cognizant Technology Solutions</td>
+                                </tr>
+
+                                <tr>
+                                    <td>HCL Technology Limited</td>
+                                    <td> Citrix Systems</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Aptus Datalabs, Bangalore</td>
+                                    <td> Silicone Interface, Mumbai</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Efftronics Systems Pvt. Ltd.</td>
+                                    <td>MainTech</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <p>qualifying GATE/CAT to pursue higher studies at Institutes like:<br></p>
+
+
+                    <div class="table-responsive">
+                        <table style="width:100%; " class="easy-table easy-table-default ">
+                            <tbody>
+                                <tr>
+                                    <td>Indian Institute of Management (IIM)</td>
+                                    <td> Xavier Institute of Management, Bhubaneswar (XIMB)</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Institute of Management Technology (IMT)</td>
+                                    <td> Indian Statistical Institute (ISI)</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Sungkyunkwan University</td>
+                                    <td> South Korea (SKKU)</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <h3>Training &amp; Placement&nbsp;In-charge</h3>
+
+
+                    <div class="table-responsive">
+                        <table style="width:100%; " class="easy-table easy-table-default ">
+                            <tbody>
+                                <tr>
+                                    <td><a title="Suman De" href=" " target="_blank" rel="noopener"><strong>Ms. Suman
+                                                De</strong></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Contact No. 7064818781</strong></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Placement Mail ID: placement@suiit.ac.in</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <h3>Training &amp; Placement Co-ordinator</h3>
+
+
+                    <div class="table-responsive">
+                        <table style="width:100%; " class="easy-table easy-table-default ">
+                            <tbody>
+                                <tr>
+                                    <td><a title="Benazir Neha" href=" "><strong>Ms. Benazir Neha</strong></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Contact No. 9439895632</strong></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Internship Mail ID: internships@suiit.ac.in</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <p>[simple_google_photos_grid album-url=”https://goo.gl/photos/nLky3s4iJYTXLjEf8″]</p>
+
+
+
+                    <p></p>
+                </div><!-- end .entry-content -->
+
+
+            </div>
+
+            
+
+
+            
+
+
+</body>
+</html>
+
+
+</body>
+</html> 
+        </div>
+    </section>
+</body>
+
+</html>

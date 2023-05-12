@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Logout Page</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<style>
+    body {
+	background-color: #f2f2f2;
+	font-family: Arial, sans-serif;
+}
+
+.container {
+	margin: 100px auto;
+	width: 500px;
+	text-align: center;
+}
+
+h1 {
+	font-size: 36px;
+	margin-bottom: 50px;
+}
+
+button {
+	background-color: #4285f4;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	padding: 10px 20px;
+	font-size: 24px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #3367d6;
+}
+
+</style>
+<body>
+	<div class="container">
+		<h1>Are you sure you want to log out?</h1>
+		<button id="logout-btn">Logout</button>
+	</div>
+
+	<script>
+        const logoutBtn = document.getElementById("logout-btn");
+
+logoutBtn.addEventListener("click", () => {
+	// perform logout action here
+	alert("You have been logged out.");
+});
+
+    </script>
+</body>
+</html>
